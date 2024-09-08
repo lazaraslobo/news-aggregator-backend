@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "esnext",                 // Latest ECMAScript features
+        "module": "esnext",                 // Use ES modules
+        "moduleResolution": "node",         // Resolve modules like Node.js
+        "jsx": "react-jsx",                 // JSX transformation for React
+        "strict": true,                     // Enable all strict type-checking options
+        "esModuleInterop": true,            // Enable compatibility with CommonJS modules
+        "skipLibCheck": true,               // Skip type checking of declaration files
+        "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+        "baseUrl": "./resources",                 // Base directory for resolving non-relative module names
+        "paths": {
+            "@pages/*": ["js/pages/*"],
+            "@page-paths": ["js/routes/page-paths.ts"],
+            "@hooks/*": ["js/hooks/*"],
+            "@helpers/*": ["js/helpers/*"],
+            "@interfaces-types/*": ["js/interfaces-types/*"],
+            "@redux/*": ["js/redux/*"],
+            "@responses/*": ["js/responses/*"],
+            "@scss/*": ["scss/*"],
+            "@components/*": ["js/components/*"],
+            "@images/*": ["images/*"]
+
+        }
+    },
+    "include": ["resources/**/*"],    // Include all files in the resources/js directory
+    "exclude": ["node_modules", "public"]     // Exclude node_modules and dist folders
+}

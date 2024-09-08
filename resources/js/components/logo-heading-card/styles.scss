@@ -1,0 +1,18 @@
+// styles.scss
+.card-component-container {
+    .card-container{
+        background: white;
+        border-radius: 10px;
+        .heading{
+            border-bottom: solid 1px #f1f1f1;
+            .icon-logo{
+                height: 50px;
+            }
+            h3{
+                padding-bottom: 1px;
+                border-bottom: solid;
+                color: #54e36f;
+            }
+        }
+    }
+}
