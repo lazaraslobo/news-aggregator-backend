@@ -12,8 +12,7 @@ class HttpService
     public function __construct(array $config = [])
     {
         $this->client = new Client(array_merge([
-            'timeout'  => 2,
-            'debug'    => true,
+            'timeout'  => 10,
             'verify'    => false,
         ], $config));
     }
