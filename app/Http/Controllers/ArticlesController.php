@@ -12,6 +12,6 @@ class ArticlesController extends Controller
         GetArticlesService $getArticlesService
     ){
         $response = $getArticlesService->setRequest($request)->process();
-        dd($response);
+        return $response;
     }
 }

@@ -1,9 +1,11 @@
 <?php
-namespace App\Services;
+namespace App\Services\External;
 
+use App\Helpers\RedisHelper;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
+use Illuminate\Support\Facades\Redis;
 
 class HttpService
 {
@@ -27,7 +29,13 @@ class HttpService
      */
     public function get(string $url, array $query = []): array
     {
-        return $this->request('GET', $url, ['query' => $query]);
+        $key = implode('-', $query);
+        $value = RedisHelper::get($key) ?? null;
+        if(!isset($value)){
+            $value = $this->request('GET', $url, ['query' => $query]);
+            RedisHelper::set($key, $value);
+        }
+        return $value;
     }
 
     /**
