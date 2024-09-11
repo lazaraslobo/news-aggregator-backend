@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Services\Internal;
+use App\Helpers\RedisHelper;
 use App\Services\HttpService;
 use Illuminate\Http\Request;
-use \App\Services\Internal\CacheArticleSources;
 
 //http://localhost/api/get-articles?sources=bbc~newyork~others&author=lobo&fromDate=1-08-2024&toDate=08-08-2024&category=politics&query=donald
 class GetArticlesService
@@ -30,6 +30,9 @@ class GetArticlesService
         $queryDateTo = $queryParams[$this->enumDateTo] ?? [];
         $queryCategory = $queryParams[$this->enumCategory] ?? [];
         $querySearchKeyword = $queryParams[$this->enumSearchKeyword] ?? [];
-        return (new CacheArticleSources())->process();
+
+        $return = RedisHelper::get(CacheArticleSources::ALL_SOURCES_DATA_MAPPED_CACHE_PREFIX) ?? [];
+
+//        return (new CacheArticleSources())->process();
     }
 }

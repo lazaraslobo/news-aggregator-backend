@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("/get-articles", [ArticlesController::class, "getArticles"])->name("getArticles");
+Route::get("/get-dashboard-data", [ArticlesController::class, "getDashboardData"])->name("get-articles-route");

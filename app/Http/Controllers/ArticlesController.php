@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonResponseHelper;
 use App\Services\Internal\GetArticlesService;
+use App\Services\Views\DashboardViewService;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
 {
-    public function getArticles(
+    public function getDashboardData(
         Request $request,
-        GetArticlesService $getArticlesService
+        DashboardViewService $service
     ){
-        $response = $getArticlesService->setRequest($request)->process();
-        return $response;
+        return JsonResponseHelper::success($service->process());
     }
 }
