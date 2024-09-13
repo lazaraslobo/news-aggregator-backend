@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/routes';
 import "@scss/app.scss";
 
 const App: React.FC = () => {
+
+    useEffect(() =>{
+
+    }, [])
+
     return (
         <div className="container">
             <RouterProvider router={router} />

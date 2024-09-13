@@ -8199,9 +8199,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "platform-overrides": {
-        "php": "8.1",
-        "ext-bcmath": "8.1"
-    },
     "plugin-api-version": "2.6.0"
 }
