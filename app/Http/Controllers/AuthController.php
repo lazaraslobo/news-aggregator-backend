@@ -54,4 +54,21 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        // Revoke the token of the currently authenticated user
+        $user = Auth::user();
+
+        // Optionally, you can revoke all tokens for this user
+        $user->tokens()->delete();
+
+        // If you're using Laravel session to store user data
+        $request->session()->invalidate();
+
+        // Regenerate the session token to prevent session fixation attacks
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Logged out successfully']);
+    }
 }
