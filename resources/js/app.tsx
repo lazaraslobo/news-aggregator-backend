@@ -5,11 +5,6 @@ import { router } from './routes/routes';
 import "@scss/app.scss";
 
 const App: React.FC = () => {
-
-    useEffect(() =>{
-
-    }, [])
-
     return (
         <div className="container">
             <RouterProvider router={router} />
