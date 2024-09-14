@@ -5,7 +5,7 @@ use App\Helpers\RedisHelper;
 use App\Responses\CacheArticlesResponse;
 use App\Services\External\HttpService;
 
-class CacheArticleSources
+class CacheAllArticleSourcesService
 {
 
     public const ALL_AUTHORS_CACHE_PREFIX = 'cache-article-topic-authors:';
@@ -103,9 +103,9 @@ class CacheArticleSources
         }
 
         if (!empty($sources) && !empty($response) && !empty($authors)) {
-            RedisHelper::set(self::ALL_SOURCES_DATA_MAPPED_CACHE_PREFIX, $response);
-            RedisHelper::set(self::ALL_SOURCES_NAMES_CACHE_PREFIX, $sources);
-            RedisHelper::set(self::ALL_AUTHORS_CACHE_PREFIX, $authors);
+            RedisHelper::set(self::ALL_SOURCES_DATA_MAPPED_CACHE_PREFIX, $response, env("TWENTY_FOUR_HOURS_TTL_SECONDS"));
+            RedisHelper::set(self::ALL_SOURCES_NAMES_CACHE_PREFIX, $sources, env("TWENTY_FOUR_HOURS_TTL_SECONDS"));
+            RedisHelper::set(self::ALL_AUTHORS_CACHE_PREFIX, $authors, env("TWENTY_FOUR_HOURS_TTL_SECONDS"));
         }
 
         return $response;
