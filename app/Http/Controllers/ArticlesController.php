@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
 {
-    public function getDashboardData(
+    public function getAllArticles(
         Request $request,
         DashboardViewService $service
     ){
