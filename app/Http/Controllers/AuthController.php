@@ -87,7 +87,7 @@ class AuthController extends Controller
         (new UserPreference())::updateOrInsertPreference(
             $user->id,
             $request->key,
-            $request->value
+            json_encode($request->value)
         );
 
         return JsonResponseHelper::success([
