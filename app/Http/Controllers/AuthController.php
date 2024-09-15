@@ -61,19 +61,23 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Revoke the token of the currently authenticated user
-        $user = Auth::user();
+        try {
+            // Revoke the token of the currently authenticated user
+            $user = Auth::user();
 
-        // Optionally, you can revoke all tokens for this user
-        $user->tokens()->delete();
+            // Optionally, you can revoke all tokens for this user
+            $user->tokens()->delete();
 
-        // If you're using Laravel session to store user data
-        $request->session()->invalidate();
+            // If you're using Laravel session to store user data
+            $request->session()->invalidate();
 
-        // Regenerate the session token to prevent session fixation attacks
-        $request->session()->regenerateToken();
+            // Regenerate the session token to prevent session fixation attacks
+            $request->session()->regenerateToken();
 
-        return JsonResponseHelper::success(['message' => 'Logged out successfully']);
+            return JsonResponseHelper::success(['message' => 'Logged out successfully']);
+        }catch (\Exception $exception){
+            return response()->json('CSRF token set failed', 401);
+        }
     }
 
     public function updateUserPreferences(Request $request){
