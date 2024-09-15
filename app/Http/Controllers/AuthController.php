@@ -81,7 +81,7 @@ class AuthController extends Controller
 
         $request->validate([
             'key' => 'required|string',
-            'value' => 'required',
+            'value' => 'nullable',
         ]);
 
         (new UserPreference())::updateOrInsertPreference(
