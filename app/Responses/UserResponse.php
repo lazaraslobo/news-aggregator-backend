@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Responses;
+use App\Helpers\JsonResponseHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResponse extends JsonResource

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonResponseHelper;
 use App\Models\User;
 use App\Models\UserPreference;
 use App\Responses\UserResponse;
@@ -23,12 +24,12 @@ class AuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('API Token')->plainTextToken;
 
-            return response()->json([
+            return JsonResponseHelper::success([
                 'token' => $token,
                 'user' => $user,
             ]);
         }
-        return response()->json(['error' => 'Unauthorized'], 401);
+        return JsonResponseHelper::success(['error' => 'Unauthorized'], 401);
     }
 
     public function register(Request $request)
@@ -51,7 +52,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Return the created user and token
-        return response()->json([
+        return JsonResponseHelper::success([
             'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
@@ -72,7 +73,7 @@ class AuthController extends Controller
         // Regenerate the session token to prevent session fixation attacks
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out successfully']);
+        return JsonResponseHelper::success(['message' => 'Logged out successfully']);
     }
 
     public function updateUserPreferences(Request $request){
@@ -89,7 +90,7 @@ class AuthController extends Controller
             $request->value
         );
 
-        return response()->json([
+        return JsonResponseHelper::success([
             "user" => new UserResponse(Auth::user()),
             'message' => 'Preferences updated successfully'
         ]);

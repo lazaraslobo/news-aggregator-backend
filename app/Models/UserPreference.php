@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserPreference extends Model
 {
@@ -18,7 +19,8 @@ class UserPreference extends Model
 
     public static function updateOrInsertPreference($userId, $type, $value)
     {
-        return self::updateOrCreate(
+
+        $updated = self::updateOrCreate(
             [
                 'user_id' => $userId,
                 'type' => $type
@@ -27,5 +29,7 @@ class UserPreference extends Model
                 'value' => $value
             ]
         );
+        Auth::user()->refresh();
+        return $updated;
     }
 }
