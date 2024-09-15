@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthController extends Controller
 {
@@ -65,6 +66,11 @@ class AuthController extends Controller
             // Revoke the token of the currently authenticated user
             $user = Auth::user();
 
+            if (!$user) {
+                // Throw an UnauthorizedHttpException if the user is not authenticated
+                throw new UnauthorizedHttpException('Bearer', 'Unauthenticated');
+            }
+
             // Optionally, you can revoke all tokens for this user
             $user->tokens()->delete();
 
@@ -76,7 +82,7 @@ class AuthController extends Controller
 
             return JsonResponseHelper::success(['message' => 'Logged out successfully']);
         }catch (\Exception $exception){
-            return response()->json('CSRF token set failed', 401);
+            return JsonResponseHelper::success([], "CSRF token set failed", 401);
         }
     }
 
