@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserPreference;
+use App\Responses\UserResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -70,5 +73,25 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return response()->json(['message' => 'Logged out successfully']);
+    }
+
+    public function updateUserPreferences(Request $request){
+        $user = Auth::user();
+
+        $request->validate([
+            'key' => 'required|string',
+            'value' => 'required',
+        ]);
+
+        (new UserPreference())::updateOrInsertPreference(
+            $user->id,
+            $request->key,
+            $request->value
+        );
+
+        return response()->json([
+            "user" => new UserResponse(Auth::user()),
+            'message' => 'Preferences updated successfully'
+        ]);
     }
 }

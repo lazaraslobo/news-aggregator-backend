@@ -15,4 +15,17 @@ class UserPreference extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public static function updateOrInsertPreference($userId, $type, $value)
+    {
+        return self::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'type' => $type
+            ],
+            [
+                'value' => $value
+            ]
+        );
+    }
 }

@@ -22,8 +22,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return new UserResponse($request->user());
     });
+
     Route::get("/get-all-articles", [ArticlesController::class, "getAllArticles"])
         ->name("get-articles-route");
+
+    Route::post('/update-preferences', [AuthController::class, 'updateUserPreferences'])
+        ->name('update-user-preferences');
 });
 
 Route::post('/login', [AuthController::class, 'login']);
