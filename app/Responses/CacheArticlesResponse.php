@@ -39,7 +39,7 @@ class CacheArticlesResponse
                     fn($item) => [
                         'source' => $item['pillarName'] ?? '',
                         'title' => $item['webTitle'] ?? '',
-                        'description' => '-',
+                        'description' =>  $item['fields']['bodyText'] ?? '',
                         'url' => $item['webUrl'] ?? '',
                         'imageSrc' => $item['fields']['thumbnail'] ?? '',
                         'publishedAt' => $item['fields']['lastModified'] ?? '',
