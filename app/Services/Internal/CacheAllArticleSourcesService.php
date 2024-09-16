@@ -116,27 +116,27 @@ class CacheAllArticleSourcesService
     {
 
         return [
-//            "news-api" => [
-//                "url" => "https://newsapi.org/v2/everything",
-//                "label" => "News API",
-//                "apiKey" => env("NEWS_API_KEY"),
-//                "queryIdentifier" => "q",
-//                "keyIdentifier" => "apiKey",
-//                "whichPageIdentifier" => 'page',
-//                "apiType" => CacheArticlesResponse::NEWS_API_TYPE
-//            ],
-//            "the-guardian-api" => [
-//                "url" => "https://content.guardianapis.com/search",
-//                "label" => "Guardian API",
-//                "apiKey" => env("THE_GUARDIAN_NEWS_API_KEY"),
-//                "queryIdentifier" => "q",
-//                "keyIdentifier" => "api-key",
-//                "whichPageIdentifier" => 'page',
-//                "apiType" => CacheArticlesResponse::GUARDIAN_API_TYPE,
-//                "params" => [
-//                    "show-fields" => "all"
-//                ]
-//            ],
+            "news-api" => [
+                "url" => "https://newsapi.org/v2/everything",
+                "label" => "News API",
+                "apiKey" => env("NEWS_API_KEY"),
+                "queryIdentifier" => "q",
+                "keyIdentifier" => "apiKey",
+                "whichPageIdentifier" => 'page',
+                "apiType" => CacheArticlesResponse::NEWS_API_TYPE
+            ],
+            "the-guardian-api" => [
+                "url" => "https://content.guardianapis.com/search",
+                "label" => "Guardian API",
+                "apiKey" => env("THE_GUARDIAN_NEWS_API_KEY"),
+                "queryIdentifier" => "q",
+                "keyIdentifier" => "api-key",
+                "whichPageIdentifier" => 'page',
+                "apiType" => CacheArticlesResponse::GUARDIAN_API_TYPE,
+                "params" => [
+                    "show-fields" => "all"
+                ]
+            ],
             "NYT-api" => [
                 "url" => "https://api.nytimes.com/svc/search/v2/articlesearch.json",
                 "label" => "New York Time API",
