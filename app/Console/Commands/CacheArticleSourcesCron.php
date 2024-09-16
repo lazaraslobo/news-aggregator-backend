@@ -28,11 +28,11 @@ class CacheArticleSourcesCron extends Command
      */
     public function handle()
     {
-        $articlesData = RedisHelper::get(CacheAllArticleSourcesService::ALL_SOURCES_DATA_MAPPED_CACHE_PREFIX) ?? [];
-        if(empty($articlesData)) {
+//        $articlesData = RedisHelper::get(CacheAllArticleSourcesService::ALL_SOURCES_DATA_MAPPED_CACHE_PREFIX) ?? [];
+//        if(empty($articlesData)) {
             \Log::info("Cache all sources CRON started at " . Carbon::now()->toDateTimeString());
             (new CacheAllArticleSourcesService())->process();
             \Log::info("Cache all sources CRON finished at " . Carbon::now()->toDateTimeString());
-        }
+//        }
     }
 }

@@ -79,7 +79,8 @@ class CacheAllArticleSourcesService
                     $data = $httpService->get($eachSource['url'], [
                             $eachSource['queryIdentifier'] => $eachTopic,
                             $eachSource['keyIdentifier'] => $eachSource['apiKey'],
-                            $eachSource['pageSizeIdentifier'] => $eachPageCount,
+                            $eachSource['whichPageIdentifier'] => $eachPageCount,
+                            ...($eachSource['params'] ?? [])
                         ]
                     ) ?? [];
 
@@ -121,9 +122,21 @@ class CacheAllArticleSourcesService
                 "apiKey" => env("NEWS_API_KEY"),
                 "queryIdentifier" => "q",
                 "keyIdentifier" => "apiKey",
-                "pageSizeIdentifier" => 'page',
+                "whichPageIdentifier" => 'page',
                 "apiType" => CacheArticlesResponse::NEWS_API_TYPE
-            ]
+            ],
+            "the-guardian-api" => [
+                "url" => "https://content.guardianapis.com/search",
+                "label" => "Guardian API",
+                "apiKey" => env("THE_GUARDIAN_NEWS_API_KEY"),
+                "queryIdentifier" => "q",
+                "keyIdentifier" => "api-key",
+                "whichPageIdentifier" => 'page',
+                "apiType" => CacheArticlesResponse::GUARDIAN_API_TYPE,
+                "params" => [
+                    "show-fields" => "all"
+                ]
+            ],
         ];
     }
 }
