@@ -30,7 +30,23 @@ class CacheArticlesResponse
                     ]
                 );
             case self::NEW_YORK_TIMES_API_TYPE:
-                return $this->getNYTApiResponse($response, $topic);
+//                dd(json_encode($response['body']['response']['docs'][0]));
+                return $this->formatResponse(
+                    $response['body']['response']['docs'] ?? [],
+                    $topic,
+                    'The New York Times',
+                    fn($item) => [
+                        'source' => $item['source'] ?? '',
+                        'title' => $item['abstract'] ?? '',
+                        'description' =>  $item['lead_paragraph'] ?? '',
+                        'url' => $item['web_url'] ?? '',
+                        'imageSrc' => 'https://www.nytimes.com/' . ($item['multimedia']['0']['url'] ?? ''),
+                        'publishedAt' => $item['pub_date'] ?? '',
+                        'content' => $item['fields']['bodyText'] ?? '',
+                        'author' => $item['byline']['original'] ?? $item['source'] ?? 'Unknown'
+                    ]
+                );
+
             case self::GUARDIAN_API_TYPE:
                 return $this->formatResponse(
                     $response['body']['response']['results'] ?? [],
