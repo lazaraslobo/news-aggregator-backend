@@ -8,114 +8,82 @@ class CacheArticlesResponse
     public const NEW_YORK_TIMES_API_TYPE = 'NYT-api';
     public const GUARDIAN_API_TYPE = 'guardian-api';
 
-    public const dateFormat = 'Y-m-d';
+    public const DATE_FORMAT = 'Y-m-d';
 
-    public function getResponse(array $response, string $type, string $topic = '')
+    public function getResponse(array $response, string $type, string $topic = ''): array
     {
         switch ($type) {
             case self::NEWS_API_TYPE:
-                return $this->getNewsApiResponse($response, $topic);
+                return $this->formatResponse(
+                    $response['body']['articles'] ?? [],
+                    $topic,
+                    'Open News',
+                    fn($item) => [
+                        'source' => $item['source']['name'] ?? '',
+                        'title' => $item['title'] ?? '',
+                        'description' => $item['description'] ?? '',
+                        'url' => $item['url'] ?? '',
+                        'imageSrc' => $item['urlToImage'] ?? '',
+                        'publishedAt' => $item['publishedAt'] ?? '',
+                        'content' => $item['content'] ?? '',
+                        'author' => $item['author'] ?? $item['source']['name'] ?? 'Unknown'
+                    ]
+                );
             case self::NEW_YORK_TIMES_API_TYPE:
                 return $this->getNYTApiResponse($response, $topic);
             case self::GUARDIAN_API_TYPE:
-                return $this->getGuardianApiResponse($response, $topic);
+                return $this->formatResponse(
+                    $response['body']['response']['results'] ?? [],
+                    $topic,
+                    'Guardians',
+                    fn($item) => [
+                        'source' => $item['pillarName'] ?? '',
+                        'title' => $item['webTitle'] ?? '',
+                        'description' => '-',
+                        'url' => $item['webUrl'] ?? '',
+                        'imageSrc' => $item['fields']['thumbnail'] ?? '',
+                        'publishedAt' => $item['fields']['lastModified'] ?? '',
+                        'content' => $item['fields']['bodyText'] ?? '',
+                        'author' => $item['fields']['byline'] ?? $item['pillarName'] ?? 'Unknown'
+                    ]
+                );
+            default:
+                return [];
         }
     }
 
-    private function getNewsApiResponse(array $response = [], string $topic): array
+    private function formatResponse(array $items, string $topic, string $apiName, callable $mapItem): array
     {
         $result = [];
         $authors = [];
         $sources = [];
-        collect($response['body']['articles'] ?? [])->each(function ($item)
-        use (&$result, &$authors, &$sources, $topic) {
-            $author = $item['author'] ?? $item['source']['name'] ?? 'Unknown';
 
-            if (!isset($result[$topic])) {
-                $result[$topic] = [];
-            }
+        collect($items)->each(function ($item) use (&$result, &$authors, &$sources, $topic, $apiName, $mapItem) {
+            $mappedItem = $mapItem($item);
+            $author = $mappedItem['author'];
 
-            if (!isset($result[$topic][$author])) {
-                $result[$topic][$author] = [];
-            }
+            // Organize result by topic and author
+            $result[$topic][$author][] = array_merge($mappedItem, [
+                'publishedAt' => (new \DateTime($mappedItem['publishedAt']))->format(self::DATE_FORMAT),
+                'topic' => $topic,
+                'whichApi' => $apiName,
+            ]);
 
-            $result[$topic][$author][] = [
-                "source" => $item['source']['name'] ?? "",
-                "title" => $item['title'] ?? "",
-                "description" => $item['description'] ?? "",
-                "url" => $item['url'] ?? "",
-                "imageSrc" => $item['urlToImage'] ?? "",
-                "publishedAt" => (new \DateTime($item['publishedAt']))->format(self::dateFormat),
-                "content" => $item['content'] ?? "",
-                "topic" => $topic,
-                "author" => $author,
-                "whichAPi" => "Open News"
-            ];
-
-            $sources[$item['source']['name']] = $sources[$item['source']['name']] ?? 0;
-            $sources[$item['source']['name']]++;
-
-            $authors[$author] = $authors[$author] ?? 0;
-            $authors[$author]++;
-
+            // Track authors and sources
+            $sources[$mappedItem['source']] = ($sources[$mappedItem['source']] ?? 0) + 1;
+            $authors[$author] = ($authors[$author] ?? 0) + 1;
         });
 
         return [
-            "results" => $result,
-            "authors" => $authors,
-            "sources" => $sources,
+            'results' => $result,
+            'authors' => $authors,
+            'sources' => $sources,
         ];
     }
 
-
-    private function getNYTApiResponse(array $response)
+    private function getNYTApiResponse(array $response, string $topic): array
     {
-
-    }
-
-    private function getGuardianApiResponse(array $response, string $topic)
-    {
-        $result = [];
-        $authors = [];
-        $sources = [];
-        collect($response['body']['response']['results'] ?? [])->each(function ($item)
-        use (&$result, &$authors, &$sources, $topic) {
-            $itemFields = $item['fields'] ?? [];
-            $author = $itemFields['byline'] ?? $item['pillarName'] ?? 'Unknown';
-
-            if (!isset($result[$topic])) {
-                $result[$topic] = [];
-            }
-
-            if (!isset($result[$topic][$author])) {
-                $result[$topic][$author] = [];
-            }
-
-            $result[$topic][$author][] = [
-                "source" => $item['pillarName'] ?? "",
-                "title" => $item['webTitle'] ?? "",
-                "description" => "-",
-                "url" => $item['webUrl'] ?? "",
-                "imageSrc" => $itemFields['thumbnail'] ?? "",
-                "publishedAt" => (new \DateTime($itemFields['lastModified']))->format(self::dateFormat),
-                "content" => $itemFields['bodyText'] ?? "",
-                "topic" => $topic,
-                "author" => $author,
-                "whichAPi" => "Guardians"
-            ];
-
-            $sources[$item['pillarName']] = $sources[$item['pillarName']] ?? 0;
-            $sources[$item['pillarName']]++;
-
-            $authors[$author] = $authors[$author] ?? 0;
-            $authors[$author]++;
-
-        });
-
-        return [
-            "results" => $result,
-            "authors" => $authors,
-            "sources" => $sources,
-        ];
+        // NYT API response formatting logic can go here
+        return []; // Placeholder for now
     }
 }
