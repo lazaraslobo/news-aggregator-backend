@@ -75,7 +75,7 @@ class CacheAllArticleSourcesService
         foreach ($this->getSourceMappings() as $eachSource){
             foreach (self::TOPICS as $eachTopic){
                 $eachPageCount = 1;
-                for($i = 0; $i < env('TOTAL_PAGES_TO_CACHE', 10); $i++){
+                for($i = 0; $i < env('ARTICLE_TOTAL_EACH_PAGES_TO_CACHE', 10); $i++){
                     $data = $httpService->get($eachSource['url'], [
                             $eachSource['queryIdentifier'] => $eachTopic,
                             $eachSource['keyIdentifier'] => $eachSource['apiKey'],

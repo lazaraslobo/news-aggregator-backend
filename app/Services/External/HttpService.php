@@ -33,7 +33,7 @@ class HttpService
         $value = RedisHelper::get($key) ?? null;
         if(!isset($value)){
             $value = $this->request('GET', $url, ['query' => $query]);
-            RedisHelper::set($key, $value);
+            RedisHelper::set($key, $value, 3600);
         }
         return $value;
     }
